@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.penglei.mapper.Mapper.SelectCourseMapper">
+    <insert id="insert" parameterType="cn.penglei.pojo.pojo.SelectCourse">
+        insert into selectCourse(studentId,courseId,selectTime)
+        value (#{selectCourse.studentId},#{selectCourse.courseId},#{selectCourse.selectTime})
+    </insert>
+
+    <select id="findCourseById" parameterType="cn.penglei.pojo.pojo.SelectCourse" resultType="java.lang.String">
+        select id
+        from selectCourse
+        where studentId=#{selectCourse.studentId} and courseId = #{selectCourse.courseId}
+        limit 1
+    </select>
+
+    <select id="findCountNum" parameterType="java.lang.String" resultType="java.lang.String">
+        select count(id)
+        from selectCourse
+        where courseId = #{id}
+    </select>
+
+    <select id="findMyCourse" parameterType="java.lang.String" resultType="cn.penglei.pojo.pojo.Course">
+        select selectCourse.selectTime,selectCourse.Id,course.sort,course.teacherId,course.name,course.studyTime,course.place,course.orginSeat
+        from selectCourse,course
+        where selectCourse.courseId=Course.id and selectCourse.studentId=#{id}
+        order by selectCourse.Id desc
+    </select>
+
+    <delete id="deleteSelectByCid" parameterType="java.lang.String">
+        delete
+        from selectCourse
+        where 1=1
+        <if test="sid!=''">
+            and id=#{id} and studentId=#{sid}
+        </if>
+        <if test="sid==''">
+            and courseId=#{id}
+        </if>
+    </delete>
+
+    <select id="findSelectTrue" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id
+        from selectCourse
+        where studentId=#{sid} and courseId=#{id}
+        limit 1
+    </select>
+</mapper>

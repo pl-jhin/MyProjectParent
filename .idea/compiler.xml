@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="pojo" />
+        <module name="course-web" />
+        <module name="sso-login" />
+        <module name="eureka" />
+        <module name="course-service" />
+        <module name="zuul" />
+        <module name="teacher-service" />
+        <module name="admin-service" />
+        <module name="admin-web" />
+        <module name="student-service" />
+        <module name="common" />
+        <module name="student-web" />
+        <module name="mapper" />
+        <module name="teacher-web" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MyProjectParent" options="" />
+      <module name="admin-service" options="-parameters" />
+      <module name="admin-web" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="course-service" options="-parameters" />
+      <module name="course-web" options="-parameters" />
+      <module name="eureka" options="-parameters" />
+      <module name="mapper" options="-parameters" />
+      <module name="pojo" options="-parameters" />
+      <module name="sso-login" options="-parameters" />
+      <module name="student-service" options="-parameters" />
+      <module name="student-web" options="-parameters" />
+      <module name="teacher-service" options="-parameters" />
+      <module name="teacher-web" options="-parameters" />
+      <module name="zuul" options="-parameters" />
+    </option>
+  </component>
+</project>

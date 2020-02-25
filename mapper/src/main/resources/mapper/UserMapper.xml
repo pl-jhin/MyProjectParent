@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.penglei.mapper.Mapper.UserMapper">
+    <select id="loginCheck" parameterType="cn.penglei.pojo.pojo.User" resultType="cn.penglei.pojo.pojo.User">
+        select id,userNumber,password,username,idType
+        from user
+        where userNumber = #{user.userNumber} and password = #{user.password} and IDtype=#{user.idType}
+        limit 1
+    </select>
+    <select id="findStudent" parameterType="java.lang.String" resultType="cn.penglei.pojo.pojo.User">
+        select id,userNumber,username,idType,password
+        from user
+        where id = #{id}
+        limit 1
+    </select>
+    <select id="findUserCheck" parameterType="cn.penglei.pojo.pojo.User" resultType="int">
+        select count(id)
+        from user
+        where userNumber = #{user.userNumber} and IDtype = #{user.idType}
+        limit 1
+    </select>
+    <insert id="insertUser" parameterType="cn.penglei.pojo.pojo.User">
+        insert into user(userNumber,password,username,IDType)
+        value (#{user.userNumber},#{user.password},#{user.username}, #{user.idType})
+    </insert>
+
+    <select id="findUserByTeacherId" resultType="cn.penglei.pojo.pojo.SelectCourse" parameterType="cn.penglei.pojo.pojo.PageHelp">
+        select selectCourse.id,selectCourse.studentId,selectCourse.courseId,selectCourse.selectTime
+        from user,selectCourse,course
+        WHERE selectCourse.courseId=Course.id
+			and `User`.id=Course.teacherId
+			AND `User`.id = #{page.id}
+        <if test="page.name!=null and page.name!=''">
+            and course.name=#{page.name}
+        </if>
+		<if test="page.page!=0 and page.limit!=0">
+            limit ${(page.page-1)*page.limit},${page.limit}
+        </if>
+    </select>
+
+    <update id="updatePassword" parameterType="java.lang.String">
+        update user
+        set password=#{password}
+        where id=#{id}
+    </update>
+
+    <update id="updateUserName" parameterType="java.lang.String">
+        update user
+        set username=#{username}
+        where id=#{id}
+    </update>
+
+    <select id="findAllUserByType" parameterType="cn.penglei.pojo.pojo.PageHelp" resultType="cn.penglei.pojo.pojo.User">
+        select *
+        from user
+        where idType=#{page.idType}
+        <if test="page.username!='' and page.username!=null">
+            and username=#{page.username}
+        </if>
+        <if test="page.name!='' and page.name!=null">
+            and userNumber=#{page.name}
+        </if>
+        <if test="page.limit!=0 and page.page!=0">
+            limit ${(page.page-1)*page.limit}, ${page.limit}
+        </if>
+    </select>
+</mapper>

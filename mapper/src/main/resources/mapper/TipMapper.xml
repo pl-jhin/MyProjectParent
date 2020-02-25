@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.penglei.mapper.Mapper.TipMapper">
+    <select id="findAllTip" parameterType="cn.penglei.pojo.pojo.PageHelp" resultType="cn.penglei.pojo.pojo.Tip">
+        select *
+        from tip
+        order by id desc
+        <if test="page.limit!=0 and page.page!=0">
+            limit ${(page.page-1)*page.limit}, ${page.limit}
+        </if>
+    </select>
+    <insert id="insertNewTip" parameterType="cn.penglei.pojo.pojo.Tip">
+        insert into tip(title,info,submitTime)
+        values (#{tip.title},#{tip.info},#{tip.submitTime})
+    </insert>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.penglei.mapper.Mapper.CourseMapper">
+    <select id="findAllCourse" resultType="cn.penglei.pojo.pojo.Course" parameterType="java.lang.String">
+        select *
+        from course
+        where 1=1
+        <if test="page.username!=null and page.username!=''">
+            and name=#{page.username}
+        </if>
+        <if test="page.idType!=null and page.idType!=''">
+            and sort=#{page.idType}
+        </if>
+        <if test="page.limit!=0 and page.page!=0">
+            limit ${(page.page-1)*page.limit}, ${page.limit}
+        </if>
+    </select>
+    <select id="findSeatById" resultType="java.lang.Integer">
+        select orginSeat
+        from course
+        where id = #{id}
+        limit 1
+    </select>
+    <select id="findCourseBySort" parameterType="java.lang.String" resultType="cn.penglei.pojo.pojo.Course">
+        select *
+        from course
+        where sort = #{sort}
+        order by id desc
+        limit 8
+    </select>
+    <select id="findCountCourse" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id)
+        from course
+    </select>
+
+    <select id="findCourseByTeacherId" resultType="cn.penglei.pojo.pojo.Course" parameterType="java.lang.String">
+        select *
+        from course
+        where teacherid=#{id}
+        <if test = "pageStart==''">
+            order by id desc
+            limit 3
+        </if>
+        <if test = "pageStart=='0'">
+        </if>
+    </select>
+
+    <select id="findCountCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(id)
+        from course
+        where teacherid = #{id}
+    </select>
+
+    <delete id="deleteCourseById" parameterType="java.lang.String">
+        delete
+        from course
+        where teacherId=#{tid} and id=#{id}
+    </delete>
+
+    <insert id="insertNewCourse" parameterType="cn.penglei.pojo.pojo.Course">
+        insert into course(sort,teacherId,name,studyTime,place,submitTime,orginSeat)
+        values (#{course.sort},
+                #{course.teacherId},
+                #{course.name},
+                #{course.studyTime},
+                #{course.place},
+                #{course.submitTime},
+                #{course.orginSeat})
+    </insert>
+
+    <select id="findRecommendCourse" resultType="cn.penglei.pojo.pojo.Course">
+       select * from course order by rand() limit 4
+
+    </select>
+
+    <select id="findCourseById" resultType="cn.penglei.pojo.pojo.Course" parameterType="java.lang.String">
+        select *
+        from course
+        where id = #{id}
+    </select>
+
+    <select id="checkCourse" resultType="java.lang.String" parameterType="cn.penglei.pojo.pojo.Course">
+        select id
+        from course
+        where studyTime=#{course.studyTime} and place = #{course.place}
+        limit 1
+    </select>
+</mapper>
