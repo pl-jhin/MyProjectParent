@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<form class="layui-form layui-form-pane" action="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程分类</label>
+        <div class="layui-input-inline">
+            <select name="sort" >
+                <option value="" >请选择课程分类</option>
+                <option value="哲学" selected="">哲学</option>
+                <option value="经济学" >经济学</option>
+                <option value="法学">法学</option>
+                <option value="教育学">教育学</option>
+                <option value="文学">文学</option>
+                <option value="历史学">历史学</option>
+                <option value="理学">理学</option>
+                <option value="工学">工学</option>
+                <option value="军事学">军事学</option>
+                <option value="管理学">管理学</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">上课时间</label>
+        <div class="layui-input-inline">
+            <select name="time1">
+                <option value="" >请选择课程星期</option>
+                <option value="周一" selected="">周一</option>
+                <option value="周二" >周二</option>
+                <option value="周三">周三</option>
+                <option value="周四">周四</option>
+                <option value="周五">周五</option>
+            </select>
+        </div>
+        <div class="layui-input-inline">
+            <select name="time2">
+                <option value="" >请选择课程节数</option>
+                <option value="第1.2节" selected>第1.2节</option>
+                <option value="第3.4节">第3.4节</option>
+                <option value="第5.6节">第5.6节</option>
+                <option value="第7.8节">第7.8节</option>
+                <option value="第9.10节">第9.10节</option>
+                <option value="第11.12节">第11.12节</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">上课地点</label>
+        <div class="layui-input-inline">
+            <select name="place1">
+                <option value="" >请选择教学楼</option>
+                <option value="教一" selected="">教一</option>
+                <option value="教二" >教二</option>
+                <option value="教三">教三</option>
+                <option value="实一">实一</option>
+                <option value="实二">实二</option>
+            </select>
+        </div>
+
+
+        <div class="layui-input-inline">
+            <select name="place2">
+                <option value="" >请选择楼层</option>
+                <option value="1" selected="" >1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="layui-input-inline">
+            <select name="place3">
+                <option value="" >请选择教室</option>
+                <option value="01" selected="">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">可选课人数</label>
+        <div class="layui-input-inline">
+            <input type="number" name="orginSeat" lay-verify="required" placeholder="请输入可选课人数" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn" lay-submit="" lay-filter="saveBtn">确定新增</button>
+    </div>
+</form>
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var res = data.field;
+            $.ajax({
+                url:"../teacher/insertCourse",
+                type:"post",
+                data:{
+                    name:res.name,sort:res.sort,
+                    studyTime:res.time1+""+res.time2,
+                    place:res.place1+""+res.place2+res.place3,
+                    orginSeat:res.orginSeat
+                },
+                success:function (res) {
+                    if (res==0){
+                        layer.msg("该授课时间和地点已被使用，请重新输入")
+                    }else {
+                        layer.msg("提交成功");
+                    }
+                }
+            })
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

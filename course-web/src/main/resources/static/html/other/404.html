@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>404 - Fly社区</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="fly,layui,前端社区">
+  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+  <link rel="stylesheet" href="../../res/layui/css/layui.css">
+  <link rel="stylesheet" href="../../res/css/global.css">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <ul class="layui-nav fly-nav layui-hide-xs">
+      <li class="layui-nav-item layui-this">
+        <a href="../../index.html"><i class="iconfont icon-jiaoliu"></i>首页</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="../case/case.html"><i class="iconfont icon-iconmingxinganli"></i>课程选择</a>
+      </li>
+    </ul>
+
+    <ul class="layui-nav fly-nav-user">
+
+
+    </ul>
+  </div>
+</div>
+
+
+<div class="layui-container fly-marginTop">
+	<div class="fly-panel">
+	  <div class="fly-none">
+	    <h2><i class="iconfont icon-404"></i></h2>
+	    <p>页面或者数据被<a href="http://fly.layui.com/u/336" target="_blank"> 纸飞机 </a>运到火星了，啥都看不到了…</p>
+	  </div>
+	</div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="#" target="_blank">选课系统</a> 2020 &copy; <a href="pladios.top" target="_blank">penglei</a></p>
+
+</div>
+
+<script src="../../res/layui/layui.js"></script>
+
+<script>
+  layui.use(['layer', 'laytpl', 'table','form', 'element', 'upload', 'util' ,'laypage','form'], function() {
+    var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            layer = layui.layer,
+            laypage = layui.laypage;
+    // 判断用户是否登录
+    $.getJSON(
+            "../../course/checkLogin",
+            function (res) {
+              if (res == 1) {
+                $(".fly-nav-user").html("<li class=\"layui-nav-item\">\n" +
+                        "        <a class=\"fly-nav-avatar\" href=\"javascript:;\"onclick='myInfo()' >\n" +
+                        "        个人中心</a>\n" +
+                        "      </li>" +
+                        "       <li class=\"layui-nav-item\">\n" +
+                        "        <a href='http://login.penglei.com:9999/login/logout?target=http://www.penglei.com:8051/html/case/case.html'>" +
+                        "         注销</a>\n" +
+                        "      </li>\n")
+
+              } else {
+                $(".fly-nav-user").html("<li class=\"layui-nav-item\">\n" +
+                        "        <a class=\"iconfont icon-touxiang layui-hide-xs\" href=\"http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/html/case/case.html\"></a>\n" +
+                        "      </li>\n" +
+                        "      <li class=\"layui-nav-item\">\n" +
+                        "        <a href=\"http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/html/case/case.html\">登入</a>\n" +
+                        "      </li>\n")
+              }
+            }
+    )
+  })
+</script>
+</body>
+</html>

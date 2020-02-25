@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>学生选课系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="res/layui/css/layui.css">
+  <link rel="stylesheet" href="res/css/global.css">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <ul class="layui-nav fly-nav layui-hide-xs">
+      <li class="layui-nav-item layui-this">
+        <a href="index.html"><i class="iconfont icon-jiaoliu"></i>首页</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="html/case/case.html"><i class="iconfont icon-iconmingxinganli"></i>课程选择</a>
+      </li>
+    </ul>
+    
+    <ul class="layui-nav fly-nav-user" >
+    </ul>
+  </div>
+</div>
+
+
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15" style="margin-top: 15px">
+    <div class="layui-col-md8">
+      <div class="fly-panel">
+        <div class="fly-panel-title fly-filter">
+          <a>推荐课程</a>
+        </div>
+        <ul class="fly-list" id="Recommend_course">
+        </ul>
+      </div>
+
+
+    </div>
+    <div class="layui-col-md4">
+
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">选课帮助</h3>
+        <ul class="fly-panel-main fly-list-static">
+          <li>
+            <a href="html/other/404.html" >
+              必须登录才能选课
+            </a>
+          </li>
+          <li>
+            <a href="html/other/404.html" >
+              除学生以外无法选课
+            </a>
+          </li>
+          <li>
+            <a href="html/other/404.html" >
+              不允许重复选课
+            </a>
+          </li>
+          <li>
+            <a href="html/other/404.html" >
+             课程座位不足无法选课
+            </a>
+          </li>
+          <li>
+            <a href="html/other/404.html" >
+              点击个人中心可管理资料
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="fly-panel fly-signin">
+        <div class="fly-panel-title">
+          忘记密码
+        </div>
+        <div class="fly-panel-main fly-signin-main">
+          <li>
+            <a href="html/other/404.html" >
+              忘记密码可联系管理员
+            </a>
+          </li>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="layui-container">
+    <div class="layui-row layui-col-space15">
+      <div class="fly-panel" style="margin-bottom: 0;">
+        <div class="fly-panel-title fly-filter">
+          <a href="javascript:" class="layui-this sort">哲学</a>
+          <span class="fly-mid" ></span>
+          <a href="javascript:" class="sort">经济学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">法学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">教育学</a>
+          <span class="fly-mid" ></span>
+          <a href="javascript:" class="sort">文学</a>
+          <span class="fly-mid" ></span>
+          <a href="javascript:" class="sort">历史学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">理学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">工学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">军事学</a>
+          <span class="fly-mid"></span>
+          <a href="javascript:" class="sort">管理学</a>
+        </div>
+
+        <ul class="fly-case-list" id="course_sort">
+
+        </ul>
+        <div style="text-align: center">
+          <div class="laypage-main">
+            <a href="html/case/case.html" class="laypage-next">更多课程</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="#" target="_blank">选课系统</a> 2020 &copy; <a href="pladios.top" target="_blank">penglei</a></p>
+
+</div>
+ 
+<script src="res/layui/layui.js"></script>
+<script src="res/linkRedis.js"></script>
+<script>
+  layui.use(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function() {
+    var $ = layui.jquery,
+            layer = layui.layer;
+    window.selectCourse=function(id){
+      $.post({
+                url: "/course/selectCourse",
+                data:{id:id},
+                success: function (res) {
+                  if (res==1) {
+                    layer.alert('请先登录', function(index){
+                      //do something
+                      window.location="http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/index.html";
+                      layer.close(index);
+                    });
+                  }else if (res==2){
+                    layer.msg("您的身份不是学生，无法选课")
+                  }else if (res==3){
+                    layer.msg("您已经选择了该课程")
+                  }else if (res==4){
+                    layer.msg("选课成功")
+                  }else {
+                    layer.msg("该课程无法选择")
+                  }
+                }
+              }
+      )
+    }
+
+    window.myInfo=function(){
+      $.ajax({
+              url: "/course/myInfo",
+              success: function (res) {
+              window.location=res;
+              }
+          }
+      )
+    }
+    window.openCourse = function(id){
+        var text="";
+        $.getJSON(
+                "/course/findCourseById",
+                {"id":id},
+                function (res) {
+                  text = "<div style=\"padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">" +
+                          "课程名为:<span class='layui-blue'>"+res.name+"</span><br><br>" +
+                          "授课教师为:<span class='layui-blue'>"+res.userName+"</span><br><br>" +
+                          "授课地点为:<span class='layui-blue'>"+res.place+"</span><br><br>" +
+                          "授课时间为:<span class='layui-blue'>"+res.studyTime+"</span><br><br>" +
+                          "课程总人数为:<span class='layui-blue'>"+res.orginSeat+"</span><br><br>" +
+                          "当前选课人数为:<span class='layui-blue'>"+res.seat+"</span></div>"
+                  layer.open({
+                    type: 1
+                    ,
+                    title: false //不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,
+                    btn: ['确认选课', '取消']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: text
+                    ,
+                    success: function (layero) {
+                      var btn = layero.find('.layui-layer-btn');
+                      btn.find('.layui-layer-btn0').click(function () {
+                        $.post({
+                                  url: "/course/selectCourse",
+                                  data:{id:res.id},
+                                  success: function (res) {
+                                    if (res==1) {
+                                      layer.alert('请先登录', function(index){
+                                        //do something
+                                        window.location="http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/index.html";
+                                        layer.close(index);
+                                      });
+                                    }else if (res==2){
+                                        layer.msg("您的身份不是学生，无法选课")
+                                    }else if (res==3){
+                                      layer.msg("您已经选择了该课程")
+                                    }else if (res==4){
+                                      layer.msg("选课成功")
+                                    }else {
+                                      layer.msg("该课程无法选择")
+                                    }
+                                  }
+                                }
+                        )
+                      })
+                    }
+                  });
+                }
+
+        )
+    }
+    // 判断用户是否登录
+    $.getJSON(
+            "/course/checkLogin",
+            function (res) {
+              if(res==1){
+                $(".fly-nav-user").html("<li class=\"layui-nav-item\">\n" +
+                        "        <a class=\"fly-nav-avatar\" href=\"javascript:;\"onclick='myInfo()' >\n" +
+                        "        个人中心</a>\n" +
+                        "      </li>"+
+                        "       <li class=\"layui-nav-item\">\n" +
+                        "        <a href='http://login.penglei.com:9999/login/logout?target=http://www.penglei.com:8051'>" +
+                        "         注销</a>\n" +
+                         "      </li>\n")
+
+              }else {
+                $(".fly-nav-user").html("<li class=\"layui-nav-item\">\n" +
+                        "        <a class=\"iconfont icon-touxiang layui-hide-xs\" href=\"http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/index.html\"></a>\n" +
+                        "      </li>\n" +
+                        "      <li class=\"layui-nav-item\">\n" +
+                        "        <a href=\"http://login.penglei.com:9999/login.html?target=http://www.penglei.com:8051/index.html\">登入</a>\n" +
+                        "      </li>\n")
+              }
+            }
+    )
+    $.getJSON(
+            "/course/findRecommendCourse",
+            function (res) {
+              for (var i = 0 ;i<res.length;i++) {
+                $("#Recommend_course").append("<li>\n" +
+                        "            <h2>\n" +
+                        "              <a class=\"layui-badge\">"+res[i].sort+"</a>\n" +
+                        "              <a href=\"html/jie/detail.html\">"+res[i].name+"</a>\n" +
+                        "            </h2>\n" +
+                        "            <div class=\"fly-list-info\">\n" +
+                        "              <a href=\"html/user/home.html\" link>\n" +
+                        "                <cite>"+res[i].userName+"</cite>\n" +
+                        "              </a>\n" +
+                        "              <span>"+res[i].submitTime+"</span>\n" +
+                        "              <span class=\"fly-list-nums\">\n" +
+                        "              已选人数  "+res[i].seat+"\n" +
+                        "              </span>\n" +
+                        "            </div>\n" +
+                        "            <div class=\"fly-list-badge\">\n" +
+                        "              <button class=\"layui-btn layui-btn-xs layui-bg-black\" onclick='selectCourse("+res[i].id+")'>选课</button>\n" +
+                        "              <button class=\"layui-btn layui-btn-xs layui-bg-red\" onclick='openCourse("+res[i].id+")'>查看课程</button>\n" +
+                        "            </div>\n" +
+                        "          </li>")
+              }
+
+            }
+    )
+    $.getJSON(
+            "/course/findCourseBySort?sort=哲学",
+            function (res) {
+              for (var i=0;i<res.length;i++){
+              $("#course_sort").append("<li data-id=\"123\">\n" +
+              "            <a class=\"fly-case-img\" href=\"javascript:\" onclick='openCourse("+res[i].id+")' >\n" +
+              "              <img src=\"../../res/images/fly.jpg\">\n" +
+              "              <cite class=\"layui-btn layui-btn-primary layui-btn-small\" >查看详情</cite>\n" +
+              "            </a>\n" +
+              "            <h2><a href=\"javascript:\" onclick='openCourse(" + res[i].id + ")' >" + res[i].name + "</a></h2>\n" +
+              "            <p class=\"fly-case-desc\">上课时间:"+res[i].studyTime+"<br>"+
+                          "上课地点:"+res[i].place+"<br>"+
+                          "课程分类:"+res[i].sort+"</p>\n" +
+              "            <div class=\"fly-case-info\">\n" +
+              "              <a href=\"../user/home.html\" class=\"fly-case-user\" target=\"_blank\"><img src=\"res/images/picture.jpg\"></a>\n" +
+              "              <p class=\"layui-elip\" style=\"font-size: 12px;\"><span style=\"color: #666;\">"+res[i].userName+"</span> "+res[i].submitTime+"</p>\n" +
+              "              <p>已选<a class=\"fly-case-nums fly-case-active\" href=\"javascript:;\" data-type=\"showPraise\" style=\" padding:0 5px; color: #01AAED;\">"+res[i].seat+"</a></p>\n" +
+              "              <button class=\"layui-btn layui-btn-primary fly-case-active\" data-type=\"praise\" onclick='selectCourse("+res[i].id+")'>选课</button>\n" +
+              "            </div>\n" +
+              "          </li>"
+              )}
+            }
+    )
+
+    $('.sort').click(function() {
+      $(this).addClass("layui-this").siblings().removeClass('layui-this');
+      var text = "";
+      $.getJSON(
+              "course/findCourseBySort",
+              {sort:$(this).text()},
+              function (res) {
+                for (var i=0;i<res.length;i++){
+                  text = text+"<li data-id=\"123\">\n" +
+                          "            <a class=\"fly-case-img\" href=\"javascript:\" onclick='openCourse("+res[i].id+")'>\n" +
+                          "              <img src=\"../../res/images/fly.jpg\" alt=\"Fly社区\">\n" +
+                          "              <cite class=\"layui-btn layui-btn-primary layui-btn-small\">查看详情</cite>\n" +
+                          "            </a>\n" +
+                          "            <h2><a href=\"javascript:\" onclick='openCourse(" + res[i].id + ")' >" + res[i].name + "</a></h2>\n" +
+                          "            <p class=\"fly-case-desc\">上课时间:"+res[i].studyTime+"<br>"+
+                          "             上课地点:"+res[i].place+"<br>"+
+                          "             课程分类:"+res[i].sort+"</p>\n" +
+                          "            <div class=\"fly-case-info\">\n" +
+                          "              <a href=\"../user/home.html\" class=\"fly-case-user\" target=\"_blank\"><img src=\"res/images/picture.jpg\"></a>\n" +
+                          "              <p class=\"layui-elip\" style=\"font-size: 12px;\"><span style=\"color: #666;\">"+res[i].userName+"</span> "+res[i].submitTime+"</p>\n" +
+                          "              <p>已选<a class=\"fly-case-nums fly-case-active\" href=\"javascript:;\" data-type=\"showPraise\" style=\" padding:0 5px; color: #01AAED;\">"+res[i].seat+"</a></p>\n" +
+                          "              <button class=\"layui-btn layui-btn-primary fly-case-active\" data-type=\"praise\" onclick='selectCourse("+res[i].id+")'>选课</button>\n" +
+                          "            </div>\n" +
+                          "          </li>";
+                }
+                $("#course_sort").html(text);
+              }
+      )
+    });
+  });
+
+
+
+</script>
+
+
+</body>
+</html>

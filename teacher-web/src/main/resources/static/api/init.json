@@ -1,0 +1,63 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "page/welcome.html?mpi=m-p-i-0"
+  },
+  "logoInfo": {
+    "title": "教师端",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "基本信息",
+          "href": "page/welcome.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "课程管理",
+          "href": "page/menu.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self",
+          "child": [
+            {
+              "title": " 我的课程",
+              "href": "page/myCourse.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": " 新增课程",
+              "href": "page/add.html",
+              "icon": "fa fa-navicon",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "学生管理",
+          "href": "page/table.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "历史公告",
+          "href": "page/tip_table.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        }
+
+      ]
+    }
+
+    }
+
+}

@@ -1,0 +1,30 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "page/welcome.html?mpi=m-p-i-0"
+  },
+  "logoInfo": {
+    "title": "学生端",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "基本信息",
+          "href": "page/welcome.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        }
+      ]
+    }
+
+    }
+
+}
